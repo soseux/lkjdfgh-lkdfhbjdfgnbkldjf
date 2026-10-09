@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: dota_predictor
+      POSTGRES_USER: dota
+      POSTGRES_PASSWORD: dota
+    ports:
+      - "${DOTA_POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - dota_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dota -d dota_predictor"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  dota_postgres_data:
